@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="lucia.min.js"></script>
+	<title>Todo App</title>
+	<style type="text/css">
+		body {
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+		}
+
+		.header {
+			margin-top: 8%;
+			font-size: 75px;
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+		}
+
+		.tasks {
+			width: 50%;
+			padding: 1%;
+			list-style-type: none;
+			border: 1px solid black;
+		}
+
+		input {
+			width: 40%;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="app" align="center">
+		<div class="header">Todo App</div>
+		<br /><br />
+		<input l-model="inp" placeholder="Todo" />
+		<button @click="
+			if (inp !== '')
+				todos.push(inp);localStorage.setItem('items',JSON.stringify(todos))
+		">Add</button>
+		<button @click="todos=[],localStorage.clear('items')">Clear</button>
+		<br /><br />
+		<div l-for="(task,index) in todos">
+			<div class="tasks" l-text="parseInt(this.index)+1 + '. ' +this.task"
+				@click="todos.splice(this.index, 1);localStorage.setItem('items',JSON.stringify(todos))"></div>
+		</div>
+		<br /><br /><br />
+		<div>Note: Click on the task to clear it!</div>
+	</div>
+	<script>
+		let obj = { inp: "" }, data = localStorage.getItem('items');
+		obj.todos = (data != null && data != '') ? JSON.parse(data) : [];
+		Lucia.component(obj).mount('.app');
+	</script>
+	</div>
+</body>
+
+</html>
